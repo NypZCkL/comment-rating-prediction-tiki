@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Phân lớp nội dung bình luận sản phẩm trên Tiki</h1>
+    <h2>Bạn hãy nhập nội dung bình luận cần dự đoán</h2>
+    <form name="create_comment">
+        <div>
+            <label for="content">Content</label>
+            <input type="text" id="content" name="content" required>
+        </div>
+        <div class="res"></div>
+        <br>
+        <button class="submit-btn">Predict</button>
+    </form>
+    
+    <div class="comment_list">
+        <hr>
+        {% for comment in comments %}
+            <div class="cmt_content">
+                Nội dung: <strong>{{ comment.content }}</strong>
+                <div>Số sao dự đoán:</div>
+            </div>
+            <div class="pred_rating">
+                <div>Model SVM: 
+                    {% for i in range(5) %}
+                        {% if i < comment.rating_svm %}
+                            <span class="fa fa-star checked"></span>
+                        {% else %}
+                            <span class="fa fa-star"></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div>Model DecisionTree: 
+                    {% for i in range(5) %}
+                        {% if i < comment.rating_dt %}
+                            <span class="fa fa-star checked"></span>
+                        {% else %}
+                            <span class="fa fa-star"></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div>Model RandomForest: 
+                    {% for i in range(5) %}
+                        {% if i < comment.rating_rf %}
+                            <span class="fa fa-star checked"></span>
+                        {% else %}
+                            <span class="fa fa-star"></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="func">
+                <button class="show-edit-btn" data-edit-id="{{ comment.id }}">Sửa bình luận</button>
+                <button class="del_comment" data-id="{{ comment.id }}">Xóa bình luận</button>
+            </div>
+            <div class="hidden" data-hidden="true" id="edit-cmt-{{ comment.id }}">
+                <br>
+                <form name="edit_comment" id="edit_cmt_form-{{ comment.id }}">
+                    <div>
+                        <label for="content">Content</label>
+                        <input type="text" id="content" name="content" required value="{{ comment.content }}">
+                    </div>
+                    <div class="res"></div>
+                    <br>
+                    <button class="submit-btn">Sửa</button>
+                </form>
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+{% endblock %}
