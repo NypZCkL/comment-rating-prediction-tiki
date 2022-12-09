@@ -1,13 +1,15 @@
 from flask import Flask, render_template
 from flask_restful import Api
-from db import db
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-from resources.comment import Comment, createcomment, commentList
+db = SQLAlchemy(app)
+
+from app.resources.comment import Comment, createcomment, commentList
 
 api = Api(app)
 
@@ -24,7 +26,3 @@ def create_table():
 api.add_resource(Comment, '/comment/<int:_id>')
 api.add_resource(createcomment, '/comment')
 api.add_resource(commentList, '/comments')
-
-if __name__ == '__main__':
-    db.init_app(app)
-    app.run('localhost', 5000, debug=True)

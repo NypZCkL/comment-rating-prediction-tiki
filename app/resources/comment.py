@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from models.comment import CommentModel
+from app.models.comment import CommentModel
 from sqlalchemy import desc
 
 import re
